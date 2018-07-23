@@ -41,7 +41,7 @@ exports.handler = (event, context, callback) => {
 
     const failsafeTimeout = setTimeout(() => {
       errorDebug('Response timed out for query', event);
-      done(`Sorry - I couldn't respond in time. Please try your command again.`, true);
+      done(`Lo siento, no he podido responder a tiempo. Prueba el comando de nuevo.`, true);
     }, process.env.FAILSAFE_TIMEOUT || 5000);
 
     const done = (speech, err) => {
@@ -69,7 +69,7 @@ exports.handler = (event, context, callback) => {
       case 'POST':
         const query = body.result && body.result.resolvedQuery;
         if(!query) {
-          done('No query found', true);
+          done('No encontrado', true);
           return;
         }
         const source = (body.originalRequest && body.originalRequest.source) ? body.originalRequest.source : 'no-source';
@@ -92,7 +92,7 @@ exports.handler = (event, context, callback) => {
           username = body.sessionId; // for web demo
         }
 
-        const CHANGE_GAME_STRINGS = ['change game to','change game 2'];
+        const CHANGE_GAME_STRINGS = ['cambiar juego a','change game 2'];
         const AVAILABLE_GAMES = [
         {
           name: 'anchorhead',
@@ -121,10 +121,10 @@ exports.handler = (event, context, callback) => {
           });
           if(updatedGame) {
             updateSelectedGame(username, updatedGame.name).then(() => {
-              done(`Game changed to: ${updatedGame.name}. Say a command like 'look' or 'west' to get started.`);
-            }).catch((err) => done(`Error updating selected game name in dynamo: ${err}`));
+              done(`Juego cambiado a: ${updatedGame.name}. Say a command like 'look' or 'west' to get started.`);
+            }).catch((err) => done(`Error Error al cambiar el juego: ${err}`));
           } else {
-            done(`Game not found. Please say 'change game to' one of the following: ${gameNames}`);
+            done(`Juego no encontrado. Por favor di 'cambiar juego a' uno de los siguientes: ${gameNames}`);
           }
         } else {
           getSelectedGame(username).then((selectedGame) => {
